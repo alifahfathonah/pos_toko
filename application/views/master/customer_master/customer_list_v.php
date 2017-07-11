@@ -28,11 +28,11 @@
                       <td class="text-center"><?php echo $row->customer_phone?></td>
                       <td class="text-center"><?php echo $row->customer_address?></td>
                       <td class="text-center">
-                        <a href="<?php echo base_url('customer_c/edit_customer/'.$row->customer_id)?>" class="btn btn-success">
+                        <a href="<?php echo base_url('Customer/edit_customer/'.$row->customer_id)?>" class="btn btn-success">
                           <i class="fa fa-edit"></i> Edit
                         </a>
                         <a href="javascript:void(0)" class="btn btn-danger"
-                        onclick="confirm_delete(<?php echo $row->customer_id?>, 'customer_c/delete_customer/')">
+                        onclick="confirm_delete(<?php echo $row->customer_id?>, 'Customer/delete_customer/')">
                           <i class="fa fa-trash-o"></i> Delete
                         </a>
                       </td>

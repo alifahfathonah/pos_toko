@@ -21,7 +21,7 @@ class Supplier_c extends MY_Controller{
     $data = array('suppliers'   => $this->select_config('suppliers', ''),
                   'action'      => "Supplier_c/supplier_form",
                 );
-    $this->load->view('master/Supplier_master/supplier_list_v', $data);
+    $this->load->view('master/supplier_master/supplier_list_v', $data);
   }
 
   function supplier_form()

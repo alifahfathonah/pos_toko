@@ -6,7 +6,7 @@ class Customer_c extends MY_Controller{
   public function __construct()
   {
     parent::__construct();
-    $this->load->model('customer_m');
+    $this->load->model('Customer_m');
     $this->load_plugin_head[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/plugins/datatables/datatables.min.css";
     $this->load_plugin_head[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css";
     $this->load_plugin_head[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css";
@@ -44,8 +44,8 @@ class Customer_c extends MY_Controller{
     $where = '';
     $where_user_id = '';
     $url   = "master/customer_master/customer_form";
-    $data  = array('action_add'   => "customer_c/add_customer",
-                   'action_close' => "customer_c",
+    $data  = array('action_add'   => "Customer/add_customer",
+                   'action_close' => "Customer",
                    'customer_details' => false,
                    'customer'    => $this->select_config('customers', $where)
                     );
@@ -79,8 +79,8 @@ class Customer_c extends MY_Controller{
     $where_customer_id  = "WHERE customer_id = '$id'";
 
     $action         = "master/customer_master/customer_form";
-    $data  = array('action_add'     => "customer_c/update_customer",
-                   'action_close'   => "customer_c",
+    $data  = array('action_add'     => "Customer_c/update_customer",
+                   'action_close'   => "Customer_c",
                    'customer_details'   => $this->select_config('customers', $where_customer_id)->row()
                     );
 
@@ -109,7 +109,7 @@ class Customer_c extends MY_Controller{
 
    $this->update_config('customers', $data, $where);
 
-   redirect('customer_c');
+   redirect('Customer_c');
 
   }
 
@@ -120,7 +120,7 @@ class Customer_c extends MY_Controller{
     );
 
     $this->delete_config('customers',$where);
-    redirect('customer_c');
+    redirect('Customer_c');
 
   }
 

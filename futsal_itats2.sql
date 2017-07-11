@@ -12,9 +12,7 @@ MySQL - 5.5.5-10.1.21-MariaDB : Database - futsal_itats
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`futsal_itats` /*!40100 DEFAULT CHARACTER SET latin1 */;
 
-USE `futsal_itats`;
 
 /*Table structure for table `book_hour_types` */
 
@@ -68,7 +66,7 @@ CREATE TABLE `branches` (
 
 /*Data for the table `branches` */
 
-insert  into `branches`(`branch_id`,`branch_name`,`branch_phone`,`branch_address`,`branch_email`,`branch_hour_1`,`branch_hour_2`) values (2,'GOR 10 NOPEMBER','879681','TAMBAKSARI','qw@qw',1493618700,1493654400),(3,'GOR DELTA SIDOARJO','8798473','sidoarjo','delta@gmail.com',NULL,NULL),(4,'GOR REMAJA','750927509','Karang Gayam','remaja@mail',1493445600,0);
+insert  into `branches`(`branch_id`,`branch_name`,`branch_phone`,`branch_address`,`branch_email`,`branch_hour_1`,`branch_hour_2`) values (2,'GOR 10 NOPEMBER','879681','TAMBAKSARI','lntngppp@gmail.com',1493618700,1493654400),(3,'GOR DELTA SIDOARJO','8798473','sidoarjo','lntngp19@gmail.com',NULL,NULL),(4,'GOR REMAJA','750927509','Karang Gayam','lntngp19@gmail.com',1493445600,0);
 
 /*Table structure for table `building_booking` */
 
@@ -90,11 +88,11 @@ CREATE TABLE `building_booking` (
   `building_bukti_upload_date` datetime DEFAULT NULL,
   `building_bukti_img` text,
   PRIMARY KEY (`building_booking_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 /*Data for the table `building_booking` */
 
-insert  into `building_booking`(`building_booking_id`,`building_booking_code`,`building_booking_building`,`building_booking_branch`,`building_booking_customer`,`building_booking_user`,`building_booking_date`,`building_booking_date_for`,`building_booking_time_1`,`building_booking_time_2`,`building_booking_status`,`building_booking_status_desc`,`building_bukti_upload_date`,`building_bukti_img`) values (2,NULL,2,2,11,0,'2017-05-06 00:00:00','2017-05-08',12,14,2,'Belum Ada Konfirmasi',NULL,NULL),(3,NULL,2,2,12,0,'2017-05-06 00:00:00','2017-05-08',0,0,2,'Belum Ada Konfirmasi',NULL,NULL),(5,NULL,2,2,14,0,'2017-05-06 00:00:00','2017-05-10',8,10,1,'Belum Ada Konfirmasi',NULL,NULL),(6,NULL,2,2,15,0,'2017-05-06 00:00:00','2017-05-10',8,10,1,'Belum Ada Konfirmasi',NULL,NULL),(8,NULL,2,2,17,0,'2017-05-06 00:00:00','2017-05-09',8,9,1,'Belum Ada Konfirmasi',NULL,NULL),(9,NULL,3,2,18,0,'2017-05-06 00:00:00','2017-05-09',8,10,2,'Belum Ada Konfirmasi',NULL,NULL),(13,NULL,2,2,22,0,'2017-05-06 00:00:00','2017-05-13',8,10,1,'Belum Ada Konfirmasi',NULL,NULL),(14,NULL,5,2,23,0,'2017-05-06 00:00:00','2017-05-09',11,13,1,'Belum Ada Konfirmasi',NULL,NULL),(15,NULL,5,2,24,0,'2017-05-06 00:00:00','2017-05-09',11,13,1,'Belum Ada Konfirmasi',NULL,NULL),(16,NULL,5,2,25,0,'2017-05-06 00:00:00','2017-05-23',13,15,1,'Belum Ada Konfirmasi',NULL,NULL),(17,NULL,2,2,26,0,'2017-05-06 00:00:00','2017-05-10',12,13,1,'Belum Ada Konfirmasi',NULL,NULL),(19,NULL,2,2,28,0,'2017-05-06 00:00:00','2017-05-09',12,13,1,'Belum Ada Konfirmasi',NULL,NULL),(20,NULL,5,2,29,0,'2017-05-11 00:00:00','2017-05-10',8,10,1,'Belum Ada Konfirmasi',NULL,NULL),(22,'12345656784',2,2,32,0,'2017-05-14 00:00:00','2017-05-17',8,10,1,'Belum Ada Konfirmasi',NULL,NULL),(23,'123456567846',2,2,33,0,'2017-05-14 00:00:00','2017-05-14',15,17,3,'Belum Ada Konfirmasi',NULL,NULL),(24,'12345656787',2,2,34,0,'2017-05-14 00:00:00','2017-05-25',8,10,1,'Belum Ada Konfirmasi',NULL,NULL),(26,'05/25/2017/11/13/2/2',2,2,36,0,'2017-05-16 00:00:00','2017-05-25',11,13,1,'Belum Ada Konfirmasi',NULL,NULL),(27,'05/31/2017/8/12/2/2',2,2,37,0,'2017-05-16 00:00:00','2017-05-31',8,12,1,'Belum Ada Konfirmasi',NULL,NULL),(28,'05/25/2017/null/16/2/2',2,2,38,0,'2017-05-16 00:00:00','2017-05-25',0,16,1,'Belum Ada Konfirmasi',NULL,NULL),(29,'05/24/2017/10/12/2/2',2,2,39,0,'2017-05-16 00:00:00','2017-05-24',10,12,3,'Belum Ada Konfirmasi',NULL,NULL);
+insert  into `building_booking`(`building_booking_id`,`building_booking_code`,`building_booking_building`,`building_booking_branch`,`building_booking_customer`,`building_booking_user`,`building_booking_date`,`building_booking_date_for`,`building_booking_time_1`,`building_booking_time_2`,`building_booking_status`,`building_booking_status_desc`,`building_bukti_upload_date`,`building_bukti_img`) values (1,'05/28/2017/8/11/2/2',2,2,1,0,'2017-05-27 00:00:00','2017-05-28',8,11,2,'sudah mengirim bukti','2017-05-30 00:05:49','jager.jpg'),(2,'05/31/2017/8/10/5/2',5,2,2,0,'2017-05-30 00:00:00','2017-05-31',8,10,1,'Belum Ada Konfirmasi','0000-00-00 00:00:00',''),(3,'05/31/2017/8/10/3/2',3,2,3,0,'2017-05-30 00:00:00','2017-05-31',8,10,1,'Belum Ada Konfirmasi','0000-00-00 00:00:00',''),(4,'05/31/2017/11/13/5/2',5,2,4,0,'2017-05-30 00:00:00','2017-05-31',11,13,1,'Belum Ada Konfirmasi','0000-00-00 00:00:00',''),(5,'05/31/2017/8/10/2/2',2,2,5,0,'2017-05-30 00:00:00','2017-05-31',8,10,1,'Belum Ada Konfirmasi','0000-00-00 00:00:00',''),(6,'05/31/2017/14/16/5/2',5,2,6,0,'2017-05-30 00:00:00','2017-05-31',14,16,1,'Belum Ada Konfirmasi','0000-00-00 00:00:00',''),(7,'05/30/2017/8/10/5/2',5,2,7,0,'2017-05-30 00:00:00','2017-05-30',8,10,1,'Belum Ada Konfirmasi','0000-00-00 00:00:00',''),(8,'05/30/2017/11/13/5/2',5,2,8,0,'2017-05-30 00:00:00','2017-05-30',11,13,1,'Belum Ada Konfirmasi','0000-00-00 00:00:00',''),(9,'05/29/2017/8/10/5/2',5,2,9,0,'2017-05-30 00:00:00','2017-05-29',8,10,1,'Belum Ada Konfirmasi','0000-00-00 00:00:00',''),(10,'06/01/2017/8/10/5/2',5,2,10,0,'2017-05-30 00:00:00','2017-06-01',8,10,1,'Belum Ada Konfirmasi','0000-00-00 00:00:00',''),(11,'05/28/2017/8/10/5/2',5,2,11,0,'2017-05-30 00:00:00','2017-05-28',8,10,1,'Belum Ada Konfirmasi','0000-00-00 00:00:00',''),(12,'05/29/2017/11/13/5/2',5,2,12,0,'2017-05-30 00:00:00','2017-05-29',11,13,1,'Belum Ada Konfirmasi','0000-00-00 00:00:00',''),(13,'05/30/2017/14/16/5/2',5,2,13,0,'2017-05-30 00:00:00','2017-05-30',14,16,1,'Belum Ada Konfirmasi','0000-00-00 00:00:00',''),(14,'05/28/2017/11/13/5/2',5,2,14,0,'2017-05-30 00:00:00','2017-05-28',11,13,1,'Belum Ada Konfirmasi','0000-00-00 00:00:00',''),(15,'05/31/2017/11/13/2/2',2,2,15,0,'2017-05-30 00:00:00','2017-05-31',11,13,1,'Belum Ada Konfirmasi','0000-00-00 00:00:00',''),(16,'06/08/2017/8/10/5/2',5,2,16,0,'2017-05-30 00:00:00','2017-06-08',8,10,1,'Belum Ada Konfirmasi','0000-00-00 00:00:00','');
 
 /*Table structure for table `buildings` */
 
@@ -113,7 +111,7 @@ CREATE TABLE `buildings` (
 
 /*Data for the table `buildings` */
 
-insert  into `buildings`(`building_id`,`building_name`,`building_img`,`building_status`,`building_hour_book`,`building_price`,`branch`) values (1,'lap. Futsal 1','modul4email.PNG',2,1,'50000',3),(2,'lap. Futsal 2','',1,1,'50000',2),(3,'lap. Futsal 3','',2,1,'50000',2),(5,'lap. Futsal 4','',1,1,'50000',2),(6,'lap. Futsal 5','',1,1,'50000',2),(7,'lap. Futsal 6','',1,1,'50000',2),(8,'lap. Futsal 7','',1,1,'50000',2),(9,'lap. Futsal 8','',1,1,'50000',2),(10,'lap. Futsal 9','',1,1,'50000',1),(11,'lap. Futsal 10','',1,1,'50000',2),(12,'lap. Futsal 11','',1,1,'50000',2),(13,'lap. Futsal 12','',1,1,'50000',2),(14,'lap. Futsal 14','',1,1,'50000',2),(15,'lap. Futsal 15','',1,1,'50000',2),(16,'lap. Futsal 16','',1,1,'50000',2),(18,'Lapangan Tenis','',1,1,'50000',1),(19,'Lapangan Tenis','',1,1,'50000',1),(20,'Lapangan Tenis','',1,1,'50000',1);
+insert  into `buildings`(`building_id`,`building_name`,`building_img`,`building_status`,`building_hour_book`,`building_price`,`branch`) values (1,'lap. Futsal 1','modul4email.PNG',2,1,'50000',3),(2,'lap. Futsal 2','',1,1,'50000',2),(3,'lap. Futsal 3','',2,1,'50000',2),(5,'lap. Futsal 4','jager.jpg',1,1,'50000',2),(6,'lap. Futsal 5','',1,1,'50000',2),(7,'lap. Futsal 6','',1,1,'50000',2),(8,'lap. Futsal 7','',1,1,'50000',2),(9,'lap. Futsal 8','',1,1,'50000',2),(10,'lap. Futsal 9','',1,1,'50000',1),(11,'lap. Futsal 10','',1,1,'50000',2),(12,'lap. Futsal 11','',1,1,'50000',2),(13,'lap. Futsal 12','',1,1,'50000',2),(14,'lap. Futsal 14','',1,1,'50000',2),(15,'lap. Futsal 15','',1,1,'50000',2),(16,'lap. Futsal 16','',1,1,'50000',2),(18,'Lapangan Tenis','',1,1,'50000',1),(19,'Lapangan Tenis','',1,1,'50000',1),(20,'Lapangan Tenis','',1,1,'50000',1);
 
 /*Table structure for table `customers` */
 
@@ -125,14 +123,14 @@ CREATE TABLE `customers` (
   `customer_nik` varchar(200) DEFAULT NULL,
   `customer_address` text,
   `customer_phone` varchar(200) DEFAULT NULL,
-  `customer_email` text,
+  `customer_email` varchar(200) DEFAULT NULL,
   `customer_status` int(11) DEFAULT NULL,
   PRIMARY KEY (`customer_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 /*Data for the table `customers` */
 
-insert  into `customers`(`customer_id`,`customer_name`,`customer_nik`,`customer_address`,`customer_phone`,`customer_email`,`customer_status`) values (1,'Lintang Permana','qw12','Pacar Kembang','1221312','lntngp19@gmail.com',1),(10,'agung','9048504','panduk','245720','agung@gmail.com',1),(11,'ABDUL','572093','PANJANG','48759',NULL,1),(12,'Reswidya','357293847','pacarkembang','29505',NULL,1),(13,'galang dio','472309572309','pacarkembang','7523570',NULL,1),(14,'wahyu jum','59284579','setro','572987',NULL,1),(15,'wahyu jum','59284579','setro','572987',NULL,1),(16,'nonong moncrot','83947','pacar kempit','463469',NULL,1),(17,'nonong moncrot','83947','pacar kempit','463469',NULL,1),(18,'angela','7237','kedurus','478237',NULL,1),(19,'mbhpong','475894','bronggalan','9863498',NULL,1),(20,'aliyudin','65293864983','mesjid','623984',NULL,1),(21,'hasan','346890819','mojokerto','3274923',NULL,1),(22,'gogon','395209','meduro','5709',NULL,1),(23,'mulus','45689','jojoran','45689',NULL,1),(24,'mulus','45689','jojoran','45689',NULL,1),(25,'saropah','734093','meduk','23409237',NULL,1),(26,'tompel','245029','gedangan','85209',NULL,1),(27,'wedus','58028','kandang wedus','8594200',NULL,1),(28,'jojon','5298529','jojon omah','24752',NULL,1),(29,'NUR','857293','karangasem','9258',NULL,1),(30,'NUR','857293','karangasem','9258',NULL,1),(31,'Malida','273128','Nganjuk','879872',NULL,1),(32,'Malida','273128','Nganjuk','879872',NULL,1),(33,'holo','921-98','jalac','930983',NULL,1),(34,'firman','293847327','kos kosan','23049723',NULL,1),(35,'dio','756','6587','698',NULL,1),(36,'Aaa','12345','asdfghj','123456789',NULL,1),(37,'futsal','752085023','futsal','4927802',NULL,1),(38,'udin','43984930','mojokerto','42390480',NULL,1),(39,'agus','12345','alamat','123456',NULL,1);
+insert  into `customers`(`customer_id`,`customer_name`,`customer_nik`,`customer_address`,`customer_phone`,`customer_email`,`customer_status`) values (1,'agung','123456','panduk','1245','lntngp19@gmail.com',1),(2,'Rizal','1234567','Mentawai','123456','Mentawai@gmail.com',1),(3,'Yoyok','3456','njedong','54321','njedong@asd',1),(4,'Bayu','123456','mastrip','54321','bayu@gmail.com',1),(5,'muhajir','12345','kalikepiting','12345','muhajir@mail',1),(6,'firman','123456789','kalijudan','3214321','firman@gmail.com',1),(7,'diyas','123456','sidoarjo','098633','diyas@gmail.com',1),(8,'Dioiyo Surya','9089','pornorogo','12345','dio@gendut',1),(9,'Traju','12356','tulungagung','123456','tulungagung@ceriamail',1),(10,'gaga','1234567890','gaga','12345678','gaga@gmail',1),(11,'rudi','234567','njagiran','2345678','njagiran@mail',1),(12,'aku ','1245677','asdfg','ooo','lntngp19@gmail.com',1),(13,'duwi','32423764','wyerieyu','42938479','ufhufh@asd',1),(14,'jager','12345','asff','312312','dasdasd@as',1),(15,'CADASD','ASDASDS','SADASD','ASDSAD','AS@WQE',1),(16,'ASDSA','ASDAS','ASDS','ASDAS','AS@QW',1);
 
 /*Table structure for table `items` */
 
@@ -203,12 +201,13 @@ CREATE TABLE `office_details` (
   `office_name` varchar(200) DEFAULT NULL,
   `branch_id` int(11) DEFAULT NULL,
   `office_phone` varchar(200) DEFAULT NULL,
+  `office_email` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`office_detail_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 /*Data for the table `office_details` */
 
-insert  into `office_details`(`office_detail_id`,`office_name`,`branch_id`,`office_phone`) values (1,'Futsal Center 1',2,'081-1234-234');
+insert  into `office_details`(`office_detail_id`,`office_name`,`branch_id`,`office_phone`,`office_email`) values (1,'Futsal Center 1',2,'081-1234-234','lntngp19@gmail.com');
 
 /*Table structure for table `penjualan_tmp` */
 
@@ -357,9 +356,9 @@ DELIMITER $$
 
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `update_bookingstatus` */$$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `update_bookingstatus` AFTER INSERT ON `book_payment` FOR EACH ROW BEGIN
+CREATE  TRIGGER `update_bookingstatus` AFTER INSERT ON `book_payment` FOR EACH ROW BEGIN
 	update building_booking set building_booking_status = 3 where building_booking_code = new.building_booking_code;
-    END */$$
+    END $$
 
 
 DELIMITER ;

@@ -15,26 +15,44 @@ class Item_c extends My_controller{
   {
     $this->get_header($this->load_plugin_head);
     $this->item_list();
-    $this->get_footer();
+    $this->get_footer($this->load_plugin_foot);
   }
 
   function item_list()
   {
-    $data = array('items'       => $this->select_config('items', ''),
-                  'action'      => "Item_c/item_form",
+
+    $page_bar['data'][] = array(
+                              'title_page' => 'Item list',
+                              'url'        => 'Item'
+                            );
+
+    $data = array(
+                  'title_page' 	=> $this->page_bar($page_bar),
+                  'items'       => $this->select_config('items', ''),
+                  'action'      => "Item/item_form",
                 );
     $this->load->view('master/item_master/item_list_v', $data);
   }
 
   function item_form()
   {
+    $page_bar['data'][] = array(
+                              'title_page' => 'Item list',
+                              'url'        => 'Item'
+                            );
+
+    $page_bar['data'][] = array(
+                              'title_page' => 'Item Form',
+                              'url'        => 'item_form'
+                            );
+
     $where_item_id = '';
     $where         = '';
     $action   = "master/item_master/item_form";
     $data  = array(
-
-                   'action_add' => "Item_c/add_item",
-                   'action_close' => "Item_c",
+                   'title_page' 	=> $this->page_bar($page_bar),
+                   'action_add' => "Item/add_item",
+                   'action_close' => "Item",
                    'item_details'   => false,
                    'kategori_item'  => $this->select_config('kategori', $where),
                    'satuan_item'  => $this->select_config('satuan', $where)
@@ -82,11 +100,23 @@ class Item_c extends My_controller{
 
   function edit_item($id)
   {
+    $page_bar['data'][] = array(
+                              'title_page' => 'Item list',
+                              'url'        => 'Item'
+                            );
+
+    $page_bar['data'][] = array(
+                              'title_page' => 'Item Form',
+                              'url'        => '../../Item/edit_item/'.$id
+                            );
+
     $where = '';
     $where_item_id  = "WHERE item_id = '$id'";
     $action         = "master/item_master/item_form";
-    $data  = array('action_add'     => "Item_c/update_item",
-                   'action_close'   => "Item_c",
+    $data  = array(
+                   'title_page' 	=> $this->page_bar($page_bar),
+                   'action_add'     => "Item/update_item",
+                   'action_close'   => "Item",
                    'item_details'   => $this->select_config('items', $where_item_id)->row(),
                    'kategori_item'  => $this->select_config('kategori', $where),
                    'satuan_item'  => $this->select_config('satuan', $where)

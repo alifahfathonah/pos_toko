@@ -65,12 +65,12 @@
 						</ul>
 					</li>
 				<?php } ?>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a href="<?php echo base_url('payment')?>" class="nav-link nav-toggle">
             <i class="fa fa-money"></i>
             <span class="title">Payment</span>
           </a>
-        </li>
+        </li> -->
 		  </ul>
 		  <!-- END SIDEBAR MENU -->
 		  <!-- END SIDEBAR MENU -->
