@@ -9,13 +9,17 @@ class User_c extends MY_Controller{
     $this->load->model('User_model');
     $this->load_plugin_head[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/plugins/datatables/datatables.min.css";
     $this->load_plugin_head[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css";
+
+    $this->load_plugin_foot[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/scripts/datatable.js";
+    $this->load_plugin_foot[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/plugins/datatables/datatables.min.js";
+    $this->load_plugin_foot[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js";
   }
 
   function index()
   {
     $this->get_header($this->load_plugin_head);
     $this->user_list();
-    $this->get_footer();
+    $this->get_footer($this->load_plugin_foot);
   }
 
   function user_list(){
@@ -216,6 +220,18 @@ class User_c extends MY_Controller{
     echo json_encode($data);
   }
 
+  function get_user_type()
+  {
+    $where = '';
+    $q_branch = $this->select_config('user_type', $where);
+    foreach ($q_branch->result() as $row) {
+      $data[] = array(
+                    'user_type_id'    => $row->user_type_id,
+                    'user_type_name'  => $row->user_type_name
+                  );
+    }
+    echo json_encode($data);
+  }
 
 }
  ?>

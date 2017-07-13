@@ -9,6 +9,10 @@ class Item_c extends My_controller{
       $this->load->model('Item_m');
       $this->load_plugin_head[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/plugins/datatables/datatables.min.css";
       $this->load_plugin_head[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css";
+
+      $this->load_plugin_foot[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/scripts/datatable.js";
+      $this->load_plugin_foot[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/plugins/datatables/datatables.min.js";
+      $this->load_plugin_foot[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js";
   }
 
   function index()
@@ -58,7 +62,7 @@ class Item_c extends My_controller{
                    'satuan_item'  => $this->select_config('satuan', $where)
                     );
 
-    $this->get_page($data, $action);
+    $this->get_page($data, $action, $this->load_plugin_head, $this->load_plugin_foot);
   }
 
   function add_item()
@@ -112,16 +116,18 @@ class Item_c extends My_controller{
 
     $where = '';
     $where_item_id  = "WHERE item_id = '$id'";
+
     $action         = "master/item_master/item_form";
     $data  = array(
-                   'title_page' 	=> $this->page_bar($page_bar),
+                   'title_page' 	  => $this->page_bar($page_bar),
                    'action_add'     => "Item/update_item",
                    'action_close'   => "Item",
                    'item_details'   => $this->select_config('items', $where_item_id)->row(),
                    'kategori_item'  => $this->select_config('kategori', $where),
-                   'satuan_item'  => $this->select_config('satuan', $where)
+                   'satuan_item'    => $this->select_config('satuan', $where),
+                   'qitem_konversi'  => $this->Item_m->selectItemKonversi($id)
                     );
-    $this->get_page($data, $action);
+    $this->get_page($data, $action, $this->load_plugin_head, $this->load_plugin_foot);
   }
 
   function update_item(){
@@ -191,9 +197,107 @@ class Item_c extends My_controller{
     redirect('item_c');
   }
 
-
-  function popmodal_item_konversi($satuan_utama)
-  {
-      $this->load->view('master/item_master/popmodal_item_konversi');
+  function form_konversi(){
+    $data = array('action' => 'Item/item_konversi_action');
+    $this->load->view('master/item_master/popmodal_item_konversi', $data);
   }
+
+  function item_konversi($value='')
+  {
+      $item_id = $this->input->post('item_id');
+      $select = "a.item_id, a.item_name, b.*, c.*";
+      $table  = "items a" ;
+
+      $join['data'][] = array(
+        'table' => 'item_konversi b',
+        'join'  => 'b.item_id = a.item_id',
+        'type'  => 'left'
+      );
+
+      $join['data'][] = array(
+        'table' => 'satuan c',
+        'join'  => 'c.satuan_id = b.item_satuan',
+        'type'  => 'left'
+      );
+
+      $where['data'][] = array(
+        'column' => 'a.item_id',
+        'param'   => $item_id
+      );
+
+      $data = array(
+        'item_konversi' => $this->Global_m->globalselect($select, $table, $join, $where)->row()
+      );
+  }
+
+  function get_satuan()
+  {
+    $where = '';
+    if ($this->input->post('item_satuan')) {
+      $item_satuan_utama = $this->input->post('item_satuan');
+      $where = 'WHERE satuan_id != '.$item_satuan_utama;
+    }
+
+    $query = $this->select_config('satuan', $where);
+    $data = array();
+    foreach ($query->result() as $row) {
+      $data[] = array(
+                    'data_id'    => $row->satuan_id,
+                    'data_name'  => $row->satuan_name
+                  );
+    }
+    echo json_encode($data);
+  }
+
+  function get_kategori(){
+    $where = '';
+    $query = $this->select_config('kategori', $where);
+    $data = array();
+    foreach ($query->result() as $row) {
+      $data[] = array(
+                    'data_id'    => $row->kategori_id,
+                    'data_name'  => $row->kategori_name
+                  );
+    }
+    echo json_encode($data);
+  }
+
+  function item_konversi_action(){
+    if ($this->input->post('i_satuan_konversi')) {
+
+    } else {
+      $data = $this->general_post_data(1);
+      // var_dump($data);
+      $this->Global_m->create_config('item_konversi', $data);
+    }
+  }
+
+  function general_post_data($type, $id = null){
+		// 1 Insert, 2 Update, 3 Delete / Non Aktif
+		$where['data'][] = array(
+			'column' => 'barang_id',
+			'param'	 => $id
+		);
+
+		$barang_kode = $this->input->post('barang_nomor', TRUE);
+		if ($type == 1) {
+			$data = array(
+        'item_id' => $this->input->post('item_id'),
+        'item_satuan_utama' => $this->input->post('item_satuan_utama'),
+        'item_satuan' => $this->input->post('item_satuan'),
+        'item_konversi_jml' => $this->input->post('item_konversi_jml')
+      );
+		} else if ($type == 2) {
+			$data = array(
+        'item_id' => $this->input->post('item_id'),
+        'item_konversi_id' => $this->input->post('item_konversi_id'),
+        'item_satuan_utama' => $this->input->post('item_satuan_utama'),
+        'item_satuan' => $this->input->post('item_satuan'),
+        'item_konversi_jml' => $this->input->post('item_konversi_jml')
+			);
+		}
+
+		return $data;
+	}
+
 }

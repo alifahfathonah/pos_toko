@@ -57,36 +57,18 @@
                     <div class="col-md-8  col-md-offset-2">
                       <div class="form-group">
                         <label for="">Nama</label>
-                        <input type="hidden" name="i_id" class="form-control"
+                        <input type="hidden" id="i_id" name="i_id" class="form-control"
                         value="<?php echo isset($item_details->item_id) ? $item_details->item_id : ""?>">
                         <input type="text" name="i_name" class="form-control"
                         value="<?php echo isset($item_details->item_name) ? $item_details->item_name : ""?>">
                       </div>
                       <div class="form-group">
                         <label for="">Kategori</label>
-                        <select class="form-control js-example-basic-single" name="i_kategori">
-                          <option value="0"></option>
-                          <?php foreach ($kategori_item->result() as $r_kategori): ?>
-                            <option value="<?php echo $r_kategori->kategori_id?>"
-                              <?php if (isset($item_details->item_kategori) ? $item_details->item_kategori : "" ==$r_kategori->kategori_id)
-                              {echo 'selected';}?>>
-                              <?php echo  $r_kategori->kategori_name?>
-                            </option>
-                          <?php endforeach; ?>
-                        </select>
+                        <select id="i_kategori" name="i_kategori" class="form-control select2"></select>
                       </div>
                       <div class="form-group">
                         <label for="">Satuan Utama</label>
-                        <select class="form-control js-example-basic-single" id="i_satuan" name="i_satuan">
-                          <option value="0"></option>
-                          <?php foreach ($satuan_item->result() as $r_satuan): ?>
-                            <option value=""></option>
-                            <option value="<?php echo $r_satuan->satuan_id?>"
-                              <?php if (isset($item_details->item_satuan) ? $item_details->item_satuan : "" ==$r_satuan->satuan_id){echo 'selected';}?>>
-                              <?php echo  $r_satuan->satuan_name?>
-                            </option>
-                          <?php endforeach; ?>
-                        </select>
+                        <select id="i_satuan" name="i_satuan" class="form-control select2"></select>
                       </div>
                       <div class="form-group">
                         <label for="">Harga Pokok Produksi </label>
@@ -123,7 +105,7 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <table class="table table-striped table-bordered table-hover dt-responsive" width="100%">
+              <table id="example2" class="table table-striped table-bordered table-hover dt-responsive" width="100%">
                 <thead>
                   <tr>
                     <th style="text-align:center;width:5%;">No.</th>
@@ -134,18 +116,24 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td style="text-align:center;width:5%;"></td>
-                    <td style="text-align:center;"></td>
-                    <td style="text-align:center;"></td>
-                    <td style="text-align:center;"></td>
-                    <td style="text-align:center;"></td>
-                  </tr>
+                <?php
+                $no = 1;
+                foreach ($qitem_konversi as $key => $value):
+                ?>
+                    <tr>
+                      <td style="text-align:center;width:5%;"><?php echo $no ?></td>
+                      <td style="text-align:center;"><?php echo $value->satuan_utama ?></td>
+                      <td style="text-align:center;"></td>
+                      <td style="text-align:center;"></td>
+                      <td style="text-align:center;"></td>
+                    </tr>
+                <?php $no++; endforeach; ?>
                 </tbody>
                 <tfoot>
                   <tr>
                     <td colspan="5">
-                      <button type="button" id="button_konversi" name="button_konversi" class="btn btn-primary">Tambah Konversi</button>
+                      <button type="button" id="button_konversi" name="button_konversi"
+                      class="btn btn-primary" onclick="addkonversi()">Tambah Konversi</button>
                     </td>
                   </tr>
                 </tfoot>
@@ -155,7 +143,7 @@
         </div>
       </div>
     </div>
-    <div id="medium_modal" class="modal fade" tabindex="-1" role="dialog" style="z-index:4">
+    <div id="medium_modal" class="modal fade" tabindex="-1" role="dialog" style="z-index:40; top: 40px;">
       <div class="modal-dialog" role="document">
         <div id="medium_modal_content" class="modal-content"  style="border-radius:0;">
 
@@ -181,15 +169,34 @@
         }
     }
 
-    // $(document).ready(function () {
-    //   var number_only = $('.number_only').val();
-    //   var elem_id = '#'+$('.number_only').attr('id');
-    //   $(elem_id).val(toRp(number_only));
-    // });
 
-    $('#button_konversi').on('click', function(){
-      $('#medium_modal').modal();
-        var url = 'Item_c/popmodal_item_konversi/<?php echo $item_details->item_satuan?>';
-      $('#medium_modal_content').load(url,function(result){});
+    $(document).ready(function(){
+      var kategori_selected = '<?php echo $item_details->item_satuan;?>';
+      var item_kategori = '<?php echo $item_details->item_kategori?>';
+      var item_satuan = '<?php echo $item_details->item_satuan?>';
+
+      selectlist_global2('#i_satuan', 'Item/get_satuan', 'Pilih Satuan', item_satuan);
+      selectlist_global2('#i_kategori', 'Item/get_kategori', 'Pilih Kategori', item_kategori);
     });
+
+    function addkonversi(){
+      var item_id   = document.getElementById('i_id').value;
+      var paramArr  = [];
+      paramArr.push( {name:'item_id', value:item_id } );
+      getModalglobal(paramArr, 'Item/form_konversi', '#medium_modal');
+    }
+
+    function functionform(data){
+      var item_id = document.getElementById('item_id').value = data[0].value;
+      var item_satuan = document.getElementById('item_satuan_utama').value = '<?php echo $item_details->item_satuan?>';
+
+      $('#formAdd').find('select').addClass('form-control').select2();
+
+      var item_id   = document.getElementById('i_id').value;
+      var paramArr  = [];
+      paramArr.push( {name:'item_id', value:item_id }, {name:'item_satuan', value:item_satuan} );
+      selectlist_global2('#item_satuan', 'Item/get_satuan', 'Pilih Satuan', null, paramArr);
+      $('#item_satuan').css('width', '100%');
+    }
+
 </script>

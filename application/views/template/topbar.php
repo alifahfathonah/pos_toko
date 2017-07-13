@@ -4,7 +4,7 @@
 	}
 </style>
 
-<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white" data-baseurl="<?php echo base_url()?>">
 	<div class="page-header navbar navbar-fixed-top">
 		<!-- BEGIN HEADER INNER -->
 		<div class="page-header-inner ">

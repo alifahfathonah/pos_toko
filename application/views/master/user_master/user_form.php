@@ -25,16 +25,7 @@
                       </div>
                       <div class="form-group">
                         <label for="">Kategori</label>
-                        <select class="form-control js-example-basic-single" id="i_user_type" name="i_user_type">
-                          <option value="0"></option>
-                          <?php
-                          foreach ($user_type->result() as $r_user_tipe){?>
-                            <option value="<?php echo $r_user_tipe->user_type_id?>"
-                              <?php if ($r_user_tipe->user_type_id == $user_details->user_type){echo "selected";} ?>>
-                              <?php echo  $r_user_tipe->user_type_name?>
-                            </option>
-                          <?php } ?>
-                        </select>
+                        <select id="i_user_type" name="i_user_type" class="form-control select2"></select>
                       </div>
                       <div class="form-group">
                         <label for="">Branch</label>
@@ -84,6 +75,33 @@ $(document).ready(function() {
 
   var base_url = '<?php echo base_url();?>';
   var branch_selected = '<?php echo $user_details->branch;?>';
+  var user_type_selected = '<?php echo $user_details->user_type;?>';
+  $.ajax({
+    type      : "get",
+    dataType  : "json",
+    url       : base_url+"User_c/get_user_type",
+    success   : function(data){
+      $('#i_user_type').empty();
+      $('#i_user_type').select2('destroy');
+      $('#i_user_type').append('\
+        <option value="0"> </option>');
+
+      for (var i = 0; i < data.length; i++) {
+        var selected = '';
+        if (user_type_selected==data[i].user_type_id) {
+          selected = 'selected';
+        }
+        $('#i_user_type').append('\
+          <option value="'+data[i].user_type_id+'" '+selected+'>'+data[i].user_type_name+'</option>\
+        ');
+      }
+      $('#i_user_type').select2();
+    },
+    error     : function(data){
+      alert('error');
+    }
+  })
+
   $.ajax({
     type      : "get",
     dataType  : "json",

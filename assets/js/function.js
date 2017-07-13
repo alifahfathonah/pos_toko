@@ -1,3 +1,5 @@
+var $base_url = $('body').data('baseurl');
+
 $(function() {
   $('#input_content').on('keydown', '.number_only', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
 
@@ -161,4 +163,190 @@ function toRp(angka){
         }
     }
     return rev2.split('').reverse().join('');
+}
+
+function selectList_global(idElemen, url, placeholder, id = null){
+    // $('#i_gudang').select2('destroy');
+    $(idElemen).css('width', '100%');
+    $(idElemen).select2({
+      placeholder: placeholder,
+      multiple: false,
+      allowClear: true,
+      ajax: {
+        url: $base_url+url,
+        dataType: 'json',
+        delay: 100,
+        cache: false,
+        data: function (params) {
+          return {
+            q: params.term, // search term
+            page: params.page,
+            id  : id
+          };
+        },
+        processResults: function (data, params) {
+          // parse the results into the format expected by Select2
+          // since we are using custom formatting functions we do not need to
+          // alter the remote JSON data, except to indicate that infinite
+          // scrolling can be used
+          params.page = params.page || 1;
+
+          return {
+            results: data.items,
+            pagination: {
+              more: (params.page * 30) < data.total_count
+            }
+          };
+          // console.log(data.items);
+        }
+      },
+      escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+      minimumInputLength: 1,
+      templateResult: FormatResult,
+      templateSelection: FormatSelection,
+    });
+  }
+
+  function selectList_globalmulti(idElemen, url, placeholder, id = null){
+      $(idElemen).css('width', '100%');
+      $(idElemen).select2({
+        placeholder : placeholder,
+        multiple    : true,
+        allowClear  : true,
+        ajax: {
+          url: $base_url+url,
+          dataType: 'json',
+          delay: 100,
+          cache: false,
+          data: function (params) {
+            return {
+              q   : params.term, // search term
+              page: params.page,
+              id  : id
+            };
+          },
+          processResults: function (data, params) {
+            // parse the results into the format expected by Select2
+            // since we are using custom formatting functions we do not need to
+            // alter the remote JSON data, except to indicate that infinite
+            // scrolling can be used
+            params.page = params.page || 1;
+
+            return {
+              results: data.items,
+              pagination: {
+                more: (params.page * 30) < data.total_count
+              }
+            };
+          }
+        },
+        escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+        minimumInputLength: 1,
+        templateResult: FormatResult,
+        templateSelection: FormatSelection,
+      });
+    }
+
+
+    function selectlist_global2(idElemen, url, placeholder, id = null, array = null){
+        $.ajax({
+        type      : "POST",
+        url       : $("body").data("baseurl")+url,
+        data      : array,
+        dataType  : "json",
+        cache     : false,
+        success   : function(data){
+          $(idElemen).empty();
+          $(idElemen).select2('destroy');
+          $(idElemen).append('<option value="0">  </option>');
+          for (var i = 0; i < data.length; i++) {
+            var selected = "";
+            if (data[i].data_id == id) {
+              selected = 'selected';
+            }
+            $(idElemen).append('\
+              <option value="'+data[i].data_id+'" '+selected+'>'+data[i].data_name+'</option>\
+            ');
+          }
+          $(idElemen).select2({
+            placeholder : placeholder
+          });
+        },
+        error     : function(data){
+          alert('error');
+        }
+      });
+    }
+
+function getData(form, url){
+  var result = null;
+  // var storage1 = JSON.parse(localStorage.getItem('storage1'));
+  $.ajax({
+    type : 'POST',
+    url  : $base_url+url,
+    data : $(form).serialize(),
+    dataType : "json",
+    success:function(data){
+      getResult(data);
+    }
+  });
+  // return result;
+}
+
+function postData2(array, url){
+  var $base_url = $('body').data('baseurl');
+  var result = null;
+  $.ajax({
+    type : 'POST',
+    url  : $base_url+url,
+    data : array,
+    dataType : "json",
+    success:function(data){
+        // getResult(data)
+        return data;
+    }
+  });
+}
+
+function getModalglobal(array = null, url = null, elem) {
+    var $base_url = $('body').data('baseurl');
+    $.ajax({
+      type      : 'get',
+      url       : $base_url+url,
+      dataType  : "html",
+      success:function(data){
+        $(elem).modal({
+              keyboard: false,
+              backdrop: 'static'
+            });
+        $(elem+" .modal-content").html();
+        $(elem+" .modal-content").html(data);
+        $(elem).modal('show');
+
+        actionModalglobal('#'+$(elem).find('form').attr('id'), elem);
+
+        functionform(array);
+      }
+    });
+}
+
+function actionModalglobal(formName, modalname)
+{
+    $(formName).submit(function(event){
+      var modal_name = "#"+$(formName).parent().parent().parent().attr('id');
+      $.ajax({
+        type      : 'POST',
+        url       : $('body').data('baseurl')+document.getElementById('i_action').value,
+        data      : $(formName).serialize(),
+        cache     : false,
+        dataType  : "json",
+        success   : function(data){
+        }, error  : function () {
+          // $(modalname).modal('hidden');
+        }
+      });
+
+      $(modal_name).modal('hide');
+      event.preventDefault();
+    });
 }
