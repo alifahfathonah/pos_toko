@@ -287,28 +287,32 @@ function getData(form, url){
     data : $(form).serialize(),
     dataType : "json",
     success:function(data){
-      getResult(data);
+      // getResult(data);
+      return data;
     }
   });
-  // return result;
 }
 
-function postData2(array, url){
+function postData2(array, url, function_name = null){
   var $base_url = $('body').data('baseurl');
-  var result = null;
+  var result = [];
   $.ajax({
     type : 'POST',
     url  : $base_url+url,
     data : array,
     dataType : "json",
     success:function(data){
-        // getResult(data)
-        return data;
+        if (function_name != null) {
+          window[function_name](data);
+        } else {
+          getResult(data);
+        }
     }
   });
 }
 
-function getModalglobal(array = null, url = null, elem) {
+function getModalglobal(array = null, url = null, elem, functionafterSubmit = null) {
+  console.log(functionafterSubmit);
     var $base_url = $('body').data('baseurl');
     $.ajax({
       type      : 'get',
@@ -323,15 +327,16 @@ function getModalglobal(array = null, url = null, elem) {
         $(elem+" .modal-content").html(data);
         $(elem).modal('show');
 
-        actionModalglobal('#'+$(elem).find('form').attr('id'), elem);
+        actionModalglobal('#'+$(elem).find('form').attr('id'), elem, functionafterSubmit);
 
         functionform(array);
       }
     });
 }
 
-function actionModalglobal(formName, modalname)
+function actionModalglobal(formName, modalname, functionafterSubmit)
 {
+    var response = false;
     $(formName).submit(function(event){
       var modal_name = "#"+$(formName).parent().parent().parent().attr('id');
       $.ajax({
@@ -341,10 +346,21 @@ function actionModalglobal(formName, modalname)
         cache     : false,
         dataType  : "json",
         success   : function(data){
+          console.log(data);
+          if (data.response == 200) {
+            response = true;
+            window[functionafterSubmit](response);
+          } else {
+            response = false;
+            window[functionafterSubmit](response);
+          }
         }, error  : function () {
           // $(modalname).modal('hidden');
+          response = false;
+          window[functionafterSubmit]();
         }
       });
+
 
       $(modal_name).modal('hide');
       event.preventDefault();

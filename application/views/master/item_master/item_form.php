@@ -105,7 +105,7 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <table id="example2" class="table table-striped table-bordered table-hover dt-responsive" width="100%">
+              <table class="table table-striped table-bordered table-hover dt-responsive" width="100%">
                 <thead>
                   <tr>
                     <th style="text-align:center;width:5%;">No.</th>
@@ -113,25 +113,14 @@
                     <th style="text-align:center;">Qty</th>
                     <th style="text-align:center;">Satuan Konversi</th>
                     <th style="text-align:center;">Qty</th>
+                    <th style="text-align:center;">Action</th>
                   </tr>
                 </thead>
-                <tbody>
-                <?php
-                $no = 1;
-                foreach ($qitem_konversi as $key => $value):
-                ?>
-                    <tr>
-                      <td style="text-align:center;width:5%;"><?php echo $no ?></td>
-                      <td style="text-align:center;"><?php echo $value->satuan_utama ?></td>
-                      <td style="text-align:center;"></td>
-                      <td style="text-align:center;"></td>
-                      <td style="text-align:center;"></td>
-                    </tr>
-                <?php $no++; endforeach; ?>
+                <tbody id="tablekonversi">
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colspan="5">
+                    <td colspan="6">
                       <button type="button" id="button_konversi" name="button_konversi"
                       class="btn btn-primary" onclick="addkonversi()">Tambah Konversi</button>
                     </td>
@@ -156,6 +145,37 @@
 
 <script type="text/javascript">
 
+  $(document).ready(function(){
+    tableKonversi();
+  });
+
+  function tableKonversi(){
+    var item_id   = document.getElementById('i_id').value;
+    var paramArr  = [];
+    paramArr.push( {name:'item_id', value:item_id } );
+    postData2(paramArr, 'Item/loadDatakonversi', 'getResultTable');
+  }
+
+  function getResultTable(data){
+    var html = '';
+
+      for (var i = 0; i < data.data.length; i++) {
+        html += '<tr>';
+        html +='<td style="text-align:center;">'+data.data[i].no+'</td>';
+        html +='<td style="text-align:center;">'+data.data[i].satuan_utama+'</td>';
+        html +='<td style="text-align:center;">'+data.data[i].item_satuan_utama_jml+'</td>';
+        html +='<td style="text-align:center;">'+data.data[i].satuan_konversi+'</td>';
+        html +='<td style="text-align:center;">'+data.data[i].item_konversi_jml+'</td>';
+        html +='<td style="text-align:center;">' +
+        '<button class="btn btn-primary">Edit</button>' +
+        '<button class="btn btn-danger">Hapus</button></td>';
+        html +='</tr>';
+      }
+      $('#tablekonversi').html(html);
+// console.log($('#tablekonversi').parent().parent());
+
+  }
+
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -168,7 +188,6 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
-
 
     $(document).ready(function(){
       var kategori_selected = '<?php echo $item_details->item_satuan;?>';
@@ -183,20 +202,26 @@
       var item_id   = document.getElementById('i_id').value;
       var paramArr  = [];
       paramArr.push( {name:'item_id', value:item_id } );
-      getModalglobal(paramArr, 'Item/form_konversi', '#medium_modal');
+      getModalglobal(paramArr, 'Item/form_konversi', '#medium_modal', 'tableKonversi');
     }
 
     function functionform(data){
       var item_id = document.getElementById('item_id').value = data[0].value;
       var item_satuan = document.getElementById('item_satuan_utama').value = '<?php echo $item_details->item_satuan?>';
 
-      $('#formAdd').find('select').addClass('form-control').select2();
-
-      var item_id   = document.getElementById('i_id').value;
       var paramArr  = [];
       paramArr.push( {name:'item_id', value:item_id }, {name:'item_satuan', value:item_satuan} );
+      postData2(paramArr, 'Item/get_satuan_name');
+
+      $('#formAdd').find('select').addClass('form-control').select2();
       selectlist_global2('#item_satuan', 'Item/get_satuan', 'Pilih Satuan', null, paramArr);
       $('#item_satuan').css('width', '100%');
     }
+
+    function getResult(data){
+      document.getElementById('item_satuan_utama_nama').value = data;
+    }
+
+
 
 </script>

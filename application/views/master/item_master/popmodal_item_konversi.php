@@ -9,7 +9,27 @@
         <input type="hidden" id="item_satuan_utama" name="item_satuan_utama" value="">
         <input type="hidden" id="i_action" name="" value="<?php echo $action?>">
         <div class="form-group">
-          <label class="control-label col-md-4">Satuan
+          <label class="control-label col-md-4">Satuan utama
+          </label>
+          <div class="col-md-8">
+            <div class="input-icon right">
+              <i class="fa"></i>
+              <input type="text" id="item_satuan_utama_nama" name="" class="form-control" value="" disabled/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-4">Jumlah Satuan Utama
+          </label>
+          <div class="col-md-8">
+            <div class="input-icon right">
+              <i class="fa"></i>
+              <input type="text" id="item_satuan_utama_jml" name="item_satuan_utama_jml" class="form-control" required/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-4">Satuan Konversi
           </label>
           <div class="col-md-8">
             <div class="input-icon right">
@@ -19,7 +39,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label col-md-4">Jumlah
+          <label class="control-label col-md-4">Jumlah Konversi
           </label>
           <div class="col-md-8">
             <div class="input-icon right">

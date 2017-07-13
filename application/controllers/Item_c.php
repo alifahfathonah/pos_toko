@@ -115,7 +115,14 @@ class Item_c extends My_controller{
                             );
 
     $where = '';
-    $where_item_id  = "WHERE item_id = '$id'";
+
+    $where_item_id_ = array(
+      'item_id' => $id
+    );
+
+    $item_satuan_utama = $this->Global_m->select_config_one('items', 'item_satuan', $where_item_id_);
+
+    $where_item_id  = "WHERE item_id = '$id' AND item_satuan = '$item_satuan_utama->item_satuan'";
 
     $action         = "master/item_master/item_form";
     $data  = array(
@@ -125,9 +132,11 @@ class Item_c extends My_controller{
                    'item_details'   => $this->select_config('items', $where_item_id)->row(),
                    'kategori_item'  => $this->select_config('kategori', $where),
                    'satuan_item'    => $this->select_config('satuan', $where),
-                   'qitem_konversi'  => $this->Item_m->selectItemKonversi($id)
+                   'qitem_konversi' => $this->Item_m->selectItemKonversi($id)
                     );
+
     $this->get_page($data, $action, $this->load_plugin_head, $this->load_plugin_foot);
+
   }
 
   function update_item(){
@@ -197,8 +206,37 @@ class Item_c extends My_controller{
     redirect('item_c');
   }
 
+  public function loadDatakonversi(){
+    $item_id = $this->input->post('item_id');
+    $where_item_id_ = array(
+      'item_id' => $item_id
+    );
+
+    $item_satuan_utama = $this->Global_m->select_config_one('items', 'item_satuan', $where_item_id_);
+
+    $where_item_id  = "WHERE item_id = '$item_id' AND item_satuan = '$item_satuan_utama->item_satuan'";
+    $qitem_konversi = $this->Item_m->selectItemKonversi($item_id);
+
+    $response['data'] = array();
+
+    $no = 1;
+    foreach ($qitem_konversi->result() as $key => $value) {
+      $response['data'][] = array(
+        'no'                    => $no,
+        'satuan_utama'          => $value->satuan_utama,
+        'item_satuan_utama_jml' => $value->item_satuan_utama_jml,
+        'satuan_konversi'       => $value->satuan_konversi,
+        'item_konversi_jml'     => $value->item_konversi_jml
+      );
+      $no++;
+    }
+    echo json_encode($response);
+	}
+
   function form_konversi(){
-    $data = array('action' => 'Item/item_konversi_action');
+    $data = array(
+      'action' => 'Item/item_konversi_action'
+    );
     $this->load->view('master/item_master/popmodal_item_konversi', $data);
   }
 
@@ -262,14 +300,29 @@ class Item_c extends My_controller{
     echo json_encode($data);
   }
 
+  function get_satuan_name(){
+    $item_satuan = $this->input->post('item_satuan');
+    $where = array('satuan_id' => $item_satuan);
+
+    $satuan_name = $this->select_config_one('satuan', 'satuan_name', $where);
+    $satuan_name = $satuan_name->satuan_name;
+    echo json_encode($satuan_name);
+  }
+
   function item_konversi_action(){
+    $response['response'] = '204';
+
     if ($this->input->post('i_satuan_konversi')) {
 
     } else {
       $data = $this->general_post_data(1);
-      // var_dump($data);
-      $this->Global_m->create_config('item_konversi', $data);
+
+      $create_config = $this->Global_m->create_config('item_konversi', $data);
+      if ($create_config) {
+        $response['response'] = '200';
+      }
     }
+    echo json_encode($response);
   }
 
   function general_post_data($type, $id = null){
@@ -284,6 +337,7 @@ class Item_c extends My_controller{
 			$data = array(
         'item_id' => $this->input->post('item_id'),
         'item_satuan_utama' => $this->input->post('item_satuan_utama'),
+        'item_satuan_utama_jml' => $this->input->post('item_satuan_utama_jml'),
         'item_satuan' => $this->input->post('item_satuan'),
         'item_konversi_jml' => $this->input->post('item_konversi_jml')
       );
@@ -292,6 +346,7 @@ class Item_c extends My_controller{
         'item_id' => $this->input->post('item_id'),
         'item_konversi_id' => $this->input->post('item_konversi_id'),
         'item_satuan_utama' => $this->input->post('item_satuan_utama'),
+        'item_satuan_utama_jml' => $this->input->post('item_satuan_utama_jml'),
         'item_satuan' => $this->input->post('item_satuan'),
         'item_konversi_jml' => $this->input->post('item_konversi_jml')
 			);
