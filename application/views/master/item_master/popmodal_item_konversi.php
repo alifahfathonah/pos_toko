@@ -34,7 +34,7 @@
           <div class="col-md-8">
             <div class="input-icon right">
               <i class="fa"></i>
-              <select id="item_satuan" name="item_satuan" class="form-control select2"></select>
+              <select id="item_satuan_konversi" name="item_satuan_konversi" class="form-control select2"></select>
             </div>
           </div>
         </div>
@@ -44,7 +44,7 @@
           <div class="col-md-8">
             <div class="input-icon right">
               <i class="fa"></i>
-              <input type="text" id="item_konversi_jml" name="item_konversi_jml" class="form-control" required/>
+              <input type="text" id="item_satuan_konversi_jml" name="item_satuan_konversi_jml" class="form-control" required/>
             </div>
           </div>
         </div>

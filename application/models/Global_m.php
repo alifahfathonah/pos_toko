@@ -60,7 +60,8 @@ class Global_m extends CI_Model{
 
   function delete_config($table, $where){
     $this->db->where($where);
-    $this->db->delete($table);
+    $query = $this->db->delete($table);
+    return $query;
   }
 
   function globalselect($select = NULL, $table = NULL, $join = NULL, $where = NULL, $where2 = NULL, $like = NULL, $order = NULL, $limit = NULL) {

@@ -7,21 +7,33 @@ class Satuan_c extends MY_controller{
 	{
 		parent::__construct();
 		$this->load->model('Satuan_m');
+		$this->load_plugin_head[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/plugins/datatables/datatables.min.css";
+		$this->load_plugin_head[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css";
+
+		$this->load_plugin_foot[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/scripts/datatable.js";
+		$this->load_plugin_foot[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/plugins/datatables/datatables.min.js";
+		$this->load_plugin_foot[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js";
 	}
 
 	function index()
 	{
-		$this->get_header();
+		$this->get_header($this->load_plugin_head);
 		$this->satuan_list();
-		$this->get_footer();
+		$this->get_footer($this->load_plugin_foot);
 	}
 
 	function satuan_list()
 	{
+		$page_bar['data'][] = array(
+															'title_page' => 'Satuan list',
+															'url'        => 'Satuan'
+														);
+
 		$data = array
 				(
-					'items'		=> $this->select_config('satuan',''),
-					'action'	=> "Satuan_c/satuan_form",
+					'title_page' 	=> $this->page_bar($page_bar),
+					'items'				=> $this->select_config('satuan',''),
+					'action'			=> "Satuan/satuan_form",
 
 				);
 		$this->load->view('master/satuan_master/satuan_list_v',$data);
@@ -29,12 +41,24 @@ class Satuan_c extends MY_controller{
 
 	function satuan_form()
 	{
+		$page_bar['data'][] = array(
+															'title_page' => 'Satuan list',
+															'url'        => 'Satuan'
+														);
+
+		$page_bar['data'][] = array(
+															'title_page' => 'Satuan form',
+															'url'        => 'Satuan/satuan_form'
+														);
+
+
 		$where_satuan_id 	= '';
 		$where 				= '';
 		$action				= "master/satuan_master/satuan_form";
 		$data	= array(
-				'action_add'	=> "Satuan_c/add_satuan",
-				'action_close'	=> "Satuan_c",
+				'title_page' 	=> $this->page_bar($page_bar),
+				'action_add'			=> "Satuan_c/add_satuan",
+				'action_close'		=> "Satuan",
 				'satuan_details'	=> false,
 
 
@@ -52,7 +76,7 @@ class Satuan_c extends MY_controller{
 
 			);
 		$this->create_config('satuan',$data);
-		redirect('Satuan_c');
+		redirect('Satuan');
 	}
 
 	function edit_satuan($id)
@@ -62,7 +86,7 @@ class Satuan_c extends MY_controller{
 		$action 			= "master/satuan_master/satuan_form";
 		$data	= array(
 				'action_add' 		=> 'Satuan_c/update_satuan',
-				'action_close'		=> 'Satuan_c',
+				'action_close'		=> 'Satuan',
 				'satuan_details'	=> $this->select_config('satuan', $where_satuan_id)->row(),
 
 			);
@@ -82,7 +106,8 @@ class Satuan_c extends MY_controller{
 		$where = array('satuan_id' => $satuan_id);
 
 		$this->update_config('satuan',$data,$where);
-		redirect('Satuan_c');
+
+		redirect('Satuan');
 
 	}
 
@@ -93,7 +118,7 @@ class Satuan_c extends MY_controller{
 			);
 		// var_dump($where);
 		$this->delete_config('satuan',$where);
-		redirect('satuan_c');
+		redirect('Satuan');
 	}
 
 

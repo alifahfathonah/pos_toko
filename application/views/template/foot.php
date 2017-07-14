@@ -56,7 +56,7 @@
         if(typeof $.fn.datepicker !== 'undefined'){
           $('#i_tanggal').datepicker({
               format: 'dd-mm-yyyy',
-          });
+          }).datepicker("setDate", new Date);
         }
 
       </script>

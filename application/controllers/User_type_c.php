@@ -26,14 +26,14 @@ class user_type_c extends MY_Controller{
   function user_type_list(){
 
     $page_bar['data'][] = array(
-                              'title_page' => 'User List',
-                              'url'        => 'user_list'
+                              'title_page' => 'User Type List',
+                              'url'        => 'User_type'
                             );
 
     $data = array(
                   'title_page' 	=> $this->page_bar($page_bar),
-                  'user_type'     => $this->User_type_model->select_user_type_list(),
-                  'action'    => "user_type_c/user_type_form",
+                  'user_type'   => $this->User_type_model->select_user_type_list(),
+                  'action'      => "User_type/user_type_form",
                 );
     $this->load->view('master/user_type_master/user_type_list_v', $data);
   }
@@ -42,12 +42,12 @@ class user_type_c extends MY_Controller{
   {
     $page_bar['data'][] = array(
                               'title_page' => 'User Type List',
-                              'url'        => '../user_list'
+                              'url'        => 'User_type'
                             );
 
     $page_bar['data'][] = array(
                               'title_page' => 'User Type Form',
-                              'url'        => '../user_type_form'
+                              'url'        => 'User_type/user_type_form'
                             );
 
     $where = '';
@@ -57,7 +57,7 @@ class user_type_c extends MY_Controller{
     $data  = array(
                    'title_page' 	=> $this->page_bar($page_bar),
                    'action_add'         => "user_type_c/user_type_add",
-                   'action_close'       => "user_type_c",
+                   'action_close'       => "User_type",
                    'user_type_details'  => false,
                    'sidebar_menu'       => $this->select_config('sidebar', $where)->result()
                  );
@@ -91,27 +91,27 @@ class user_type_c extends MY_Controller{
       $this->create_config('permits', $data);
 
     }
-    redirect('user_type_c');
+    redirect('User_type');
   }
 
   function user_type_edit($id)
   {
     $page_bar['data'][] = array(
                               'title_page' => 'User Type List',
-                              'url'        => '../user_list'
+                              'url'        => 'User_type'
                             );
 
     $page_bar['data'][] = array(
                               'title_page' => 'User Type Form',
-                              'url'        => '../user_type_form_edit/'.$id
+                              'url'        => 'User_type/user_type_edit/'.$id
                             );
     $where = '';
     $where_user_type_id  = "WHERE user_type_id = '$id'";
     $action         = "master/user_type_master/user_type_form";
     $data  = array(
                    'title_page' 	=> $this->page_bar($page_bar),
-                   'action_add'     => "user_type_c/user_type_update",
-                   'action_close'   => "user_type_c",
+                   'action_add'     => "User_type/user_type_update",
+                   'action_close'   => "User_type",
                    'user_type_details'   => $this->select_config('user_type', $where_user_type_id)->row(),
                    'user_type'  => $this->select_config('user_type', $where),
                    'sidebar_menu'  => $this->User_type_model->select_permit_access($id)->result()
@@ -149,16 +149,17 @@ class user_type_c extends MY_Controller{
         $this->update_config('permits', $data, $where_user_type_id_sidebar_id);
       }
     }
-    redirect('user_type_c');
+    redirect('User_type');
   }
 
-  function user_type_delete(){
+  function user_type_delete($id){
+
     $where = array(
       'user_type_id' => $id
     );
 
     $this->delete_config('user_type',$where);
-    redirect('user_type_c');
+    redirect('User_type');
   }
 
 

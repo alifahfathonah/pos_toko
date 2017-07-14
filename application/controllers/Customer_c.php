@@ -40,10 +40,23 @@ class Customer_c extends MY_Controller{
 
   function customer_form()
   {
+
+    $page_bar['data'][] = array(
+                              'title_page' => 'Customer list',
+                              'url'        => 'Customer'
+                            );
+
+    $page_bar['data'][] = array(
+                              'title_page' => 'Customer Form',
+                              'url'        => 'Customer/customer_form'
+                            );
+
     $where = '';
     $where_user_id = '';
     $url   = "master/customer_master/customer_form";
-    $data  = array('action_add'   => "Customer/add_customer",
+    $data  = array(
+                   'title_page' 	=> $this->page_bar($page_bar),
+                   'action_add'   => "Customer/add_customer",
                    'action_close' => "Customer",
                    'customer_details' => false,
                    'customer'    => $this->select_config('customers', $where)
@@ -74,11 +87,23 @@ class Customer_c extends MY_Controller{
 
   function edit_customer($id)
   {
+    $page_bar['data'][] = array(
+                              'title_page' => 'Customer list',
+                              'url'        => 'Customer'
+                            );
+
+    $page_bar['data'][] = array(
+                              'title_page' => 'Customer Form',
+                              'url'        => 'Customer/edit_customer/'.$id.''
+                            );
+
     $where = '';
     $where_customer_id  = "WHERE customer_id = '$id'";
 
     $action         = "master/customer_master/customer_form";
-    $data  = array('action_add'     => "Customer_c/update_customer",
+    $data  = array(
+                   'title_page' 	=> $this->page_bar($page_bar),
+                   'action_add'     => "Customer_c/update_customer",
                    'action_close'   => "Customer_c",
                    'customer_details'   => $this->select_config('customers', $where_customer_id)->row()
                     );

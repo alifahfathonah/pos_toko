@@ -65,7 +65,7 @@ class MY_Controller extends CI_Controller{
     if ($page_name) {
       for ($i=0; $i < sizeof($page_name['data']) ; $i++) {
         $page_bar = $page_bar."<li>
-                                  <a href='".$page_name['data'][$i]['url']."'>".$page_name['data'][$i]['title_page']."</a>
+                                  <a href='".base_url().$page_name['data'][$i]['url']."'>".$page_name['data'][$i]['title_page']."</a>
                                   <i class='fa fa-circle'></i>
                                </li>
                                <li>

@@ -15,31 +15,6 @@
                     <i class="icon-settings font-red-sunglo"></i>
                     <span class="caption-subject bold uppercase"> Default Form</span>
                 </div>
-                <div class="actions">
-                    <div class="btn-group">
-                        <a class="btn btn-sm green dropdown-toggle" href="javascript:;" data-toggle="dropdown"> Actions
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="dropdown-menu pull-right">
-                            <li>
-                                <a href="javascript:;">
-                                    <i class="fa fa-pencil"></i> Edit </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">
-                                    <i class="fa fa-trash-o"></i> Delete </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">
-                                    <i class="fa fa-ban"></i> Ban </a>
-                            </li>
-                            <li class="divider"> </li>
-                            <li>
-                                <a href="javascript:;"> Make admin </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
             </div>
             <div class="portlet-body form" id="input_content">
               <form class="" action="<?php echo base_url($action_add)?>" method="post" enctype="multipart/form-data">
@@ -165,15 +140,61 @@
         html +='<td style="text-align:center;">'+data.data[i].satuan_utama+'</td>';
         html +='<td style="text-align:center;">'+data.data[i].item_satuan_utama_jml+'</td>';
         html +='<td style="text-align:center;">'+data.data[i].satuan_konversi+'</td>';
-        html +='<td style="text-align:center;">'+data.data[i].item_konversi_jml+'</td>';
+        html +='<td style="text-align:center;">'+data.data[i].item_satuan_konversi_jml+'</td>';
         html +='<td style="text-align:center;">' +
-        '<button class="btn btn-primary">Edit</button>' +
-        '<button class="btn btn-danger">Hapus</button></td>';
+        '<button class="btn btn-primary" onclick="editkonversi('+data.data[i].item_konversi_id+')">Edit</button>' +
+        '<button class="btn btn-danger" onclick="hapuskonversi('+data.data[i].item_konversi_id+')">Hapus</button></td>';
         html +='</tr>';
       }
       $('#tablekonversi').html(html);
 // console.log($('#tablekonversi').parent().parent());
 
+  }
+
+  function editkonversi(id){
+
+    var paramArr  = [];
+    var url = 'Item/item_form';
+    paramArr.push( {name:'item_konversi_id', value:id } );
+
+    getModalglobal(paramArr, 'Item/form_konversi', '#medium_modal', 'tableKonversi', 'functionformedit');
+
+  }
+
+  function functionformedit(data = null){
+
+    var item_konversi_id = data[0].value;
+    var item_id = document.getElementById('item_id').value =  document.getElementById('i_id').value;
+    document.getElementById('item_konversi_id').value = item_konversi_id;
+    var item_satuan = document.getElementById('item_satuan_utama').value = '<?php echo $item_details->item_satuan?>';
+
+    var paramArr  = [];
+    paramArr.push( {name:'item_id', value:item_id }, {name:'item_satuan', value:item_satuan}, {name:'item_konversi_id', value:item_konversi_id} );
+    postData2(paramArr, 'Item/get_konversidetails', 'functionformeditdetails');
+
+  }
+
+  function functionformeditdetails(data){
+    document.getElementById('item_satuan_utama_nama').value = data.satuan_name;
+    document.getElementById('item_satuan_utama_jml').value = data.data.item_satuan_utama_jml;
+    document.getElementById('item_satuan_konversi_jml').value = data.data.item_satuan_konversi_jml;
+    var item_satuan_konversi = data.data.item_satuan_konversi;
+
+    $('#formAdd').find('select').addClass('form-control').select2();
+    selectlist_global2('#item_satuan_konversi', 'Item/get_satuan', 'Pilih Satuan', item_satuan_konversi);
+    $('#item_satuan_konversi').css('width', '100%');
+  }
+
+  function hapuskonversi(item_konversi_id){
+    var paramArr  = [];
+    paramArr.push( {name:'item_konversi_id', value:item_konversi_id} );
+    postData2(paramArr, 'Item/delete_itemKonversi', 'functionformDeletedetails');
+  }
+
+  function functionformDeletedetails(data){
+    if (data.response == '200') {
+      tableKonversi();
+    }
   }
 
     function readURL(input) {
@@ -191,8 +212,8 @@
 
     $(document).ready(function(){
       var kategori_selected = '<?php echo $item_details->item_satuan;?>';
-      var item_kategori = '<?php echo $item_details->item_kategori?>';
-      var item_satuan = '<?php echo $item_details->item_satuan?>';
+      var item_kategori     = '<?php echo $item_details->item_kategori?>';
+      var item_satuan       = '<?php echo $item_details->item_satuan?>';
 
       selectlist_global2('#i_satuan', 'Item/get_satuan', 'Pilih Satuan', item_satuan);
       selectlist_global2('#i_kategori', 'Item/get_kategori', 'Pilih Kategori', item_kategori);
@@ -202,7 +223,7 @@
       var item_id   = document.getElementById('i_id').value;
       var paramArr  = [];
       paramArr.push( {name:'item_id', value:item_id } );
-      getModalglobal(paramArr, 'Item/form_konversi', '#medium_modal', 'tableKonversi');
+      getModalglobal(paramArr, 'Item/form_konversi', '#medium_modal', 'tableKonversi', 'functionform');
     }
 
     function functionform(data){
@@ -211,15 +232,15 @@
 
       var paramArr  = [];
       paramArr.push( {name:'item_id', value:item_id }, {name:'item_satuan', value:item_satuan} );
-      postData2(paramArr, 'Item/get_satuan_name');
+      postData2(paramArr, 'Item/get_konversidetails');
 
       $('#formAdd').find('select').addClass('form-control').select2();
-      selectlist_global2('#item_satuan', 'Item/get_satuan', 'Pilih Satuan', null, paramArr);
-      $('#item_satuan').css('width', '100%');
+      selectlist_global2('#item_satuan_konversi', 'Item/get_satuan', 'Pilih Satuan', null, paramArr);
+      $('#item_satuan_konversi').css('width', '100%');
     }
 
     function getResult(data){
-      document.getElementById('item_satuan_utama_nama').value = data;
+      document.getElementById('item_satuan_utama_nama').value = data.data[0].satuan_name;
     }
 
 

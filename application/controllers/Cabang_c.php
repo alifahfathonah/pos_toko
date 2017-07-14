@@ -103,12 +103,12 @@ class Cabang_c extends MY_Controller{
 
     $page_bar['data'][] = array(
                               'title_page' => 'Cabang list',
-                              'url'        => '../cabang_list'
+                              'url'        => 'cabang_list'
                             );
 
     $page_bar['data'][] = array(
                               'title_page' => 'Cabang Form',
-                              'url'        => '../cabang_edit/'.$id
+                              'url'        => 'cabang_edit/'.$id
                             );
 
     $where = '';

@@ -23,7 +23,7 @@
                       <td class="text-center"><?php echo $no?></td>
                       <td><?php echo $row->user_type_name?></td>
                       <td class="text-center">
-                        <a href="<?php echo base_url('User_type_c/user_type_edit/'.$row->user_type_id)?>" class="btn btn-success">
+                        <a href="<?php echo base_url('User_type/user_type_edit/'.$row->user_type_id)?>" class="btn btn-success">
                           <i class="fa fa-edit"></i> Edit
                         </a>
                         <a href="javascript:void(0)" class="btn btn-danger"

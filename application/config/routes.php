@@ -77,9 +77,9 @@ $route['user_list']									      = 'User_c';
 $route['user_form']					 				      = 'User_c/user_form';
 $route['user_form_edit/(:any)']           = 'User_c/user_edit/$1';
 
-$route['user_type_list']									= 'User_type_c';
-$route['user_type_form']					 				= 'User_type_c/user_type_form';
-$route['user_type_form_edit/(:num)']      = 'User_type_c/user_type_edit/$1';
+$route['User_type']									      = 'User_type_c';
+$route['User_type/(:any)']								= 'User_type_c/$1';
+$route['User_type/(:any)/(:any)']					= 'User_type_c/$1/$2';
 
 $route['cabang_list']                     = 'Cabang_c';
 $route['cabang_form']                     = 'Cabang_c/cabang_form';
@@ -97,6 +97,19 @@ $route['Item/(:any)']                     = 'Item_c/$1';
 $route['Item/(:any)/(:any)']              = 'Item_c/$1/$2';
 
 $route['Supplier']                        = 'Supplier_c';
+$route['Supplier/(:any)']                 = 'Supplier_c/$1';
+$route['Supplier/(:any)/(:any)']          = 'Supplier_c/$1/$2';
+$route['Supplier_form']                   = 'Supplier_c/supplier_form';
+$route['Supplier_form/(:any)/(:any)']     = 'Supplier_c/$1/$2';
 
 $route['Customer']                        = 'Customer_c';
+$route['Customer/(:any)']                 = 'Customer_c/$1';
 $route['Customer/(:any)/(:any)']          = 'Customer_c/$1/$2';
+
+$route['Satuan']                          = 'Satuan_c';
+$route['Satuan/(:any)']                   = 'Satuan_c/$1';
+$route['Satuan/(:any)/(:any)']            = 'Satuan_c/$1/$2';
+
+$route['Penjualan']                       = 'Penjualan_c';
+$route['Penjualan/(:any)']                = 'Penjualan_c/$1';
+$route['Penjualan/(:any)/(:any)']         = 'Penjualan_c/$1/$2';

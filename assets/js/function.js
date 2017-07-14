@@ -293,7 +293,7 @@ function getData(form, url){
   });
 }
 
-function postData2(array, url, function_name = null){
+function postData2(array = null, url, function_name = null){
   var $base_url = $('body').data('baseurl');
   var result = [];
   $.ajax({
@@ -311,8 +311,7 @@ function postData2(array, url, function_name = null){
   });
 }
 
-function getModalglobal(array = null, url = null, elem, functionafterSubmit = null) {
-  console.log(functionafterSubmit);
+function getModalglobal(array = null, url = null, elem, functionafterSubmit = null, function_name = null) {
     var $base_url = $('body').data('baseurl');
     $.ajax({
       type      : 'get',
@@ -329,7 +328,10 @@ function getModalglobal(array = null, url = null, elem, functionafterSubmit = nu
 
         actionModalglobal('#'+$(elem).find('form').attr('id'), elem, functionafterSubmit);
 
-        functionform(array);
+        // functionform(array);
+        if (function_name != null) {
+          window[function_name](array);
+        }
       }
     });
 }
@@ -346,7 +348,6 @@ function actionModalglobal(formName, modalname, functionafterSubmit)
         cache     : false,
         dataType  : "json",
         success   : function(data){
-          console.log(data);
           if (data.response == 200) {
             response = true;
             window[functionafterSubmit](response);

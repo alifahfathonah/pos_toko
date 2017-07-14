@@ -40,6 +40,7 @@ class Item_c extends My_controller{
 
   function item_form()
   {
+
     $page_bar['data'][] = array(
                               'title_page' => 'Item list',
                               'url'        => 'Item'
@@ -47,7 +48,7 @@ class Item_c extends My_controller{
 
     $page_bar['data'][] = array(
                               'title_page' => 'Item Form',
-                              'url'        => 'item_form'
+                              'url'        => 'Item/Item_form'
                             );
 
     $where_item_id = '';
@@ -111,7 +112,7 @@ class Item_c extends My_controller{
 
     $page_bar['data'][] = array(
                               'title_page' => 'Item Form',
-                              'url'        => '../../Item/edit_item/'.$id
+                              'url'        => 'Item/edit_item/'.$id
                             );
 
     $where = '';
@@ -222,11 +223,12 @@ class Item_c extends My_controller{
     $no = 1;
     foreach ($qitem_konversi->result() as $key => $value) {
       $response['data'][] = array(
-        'no'                    => $no,
-        'satuan_utama'          => $value->satuan_utama,
-        'item_satuan_utama_jml' => $value->item_satuan_utama_jml,
-        'satuan_konversi'       => $value->satuan_konversi,
-        'item_konversi_jml'     => $value->item_konversi_jml
+        'no'                          => $no,
+        'item_konversi_id'            => $value->item_konversi_id,
+        'satuan_utama'                => $value->satuan_utama,
+        'item_satuan_utama_jml'       => $value->item_satuan_utama_jml,
+        'satuan_konversi'             => $value->satuan_konversi,
+        'item_satuan_konversi_jml'    => $value->item_satuan_konversi_jml
       );
       $no++;
     }
@@ -309,20 +311,87 @@ class Item_c extends My_controller{
     echo json_encode($satuan_name);
   }
 
+  function get_konversidetails()
+  {
+    $item_id = $this->input->post('item_id');
+    $item_satuan = $this->input->post('item_satuan');
+
+    $data = array();
+    if ($this->input->post('item_konversi_id')) {
+
+      $item_konversi_id = $this->input->post('item_konversi_id');
+      $where_item_konversi_id = array(
+        'item_konversi_id' => $item_konversi_id
+      );
+
+      $itemkonversidetail = $this->Global_m->select_config_array('item_konversi', $where_item_konversi_id)->row();
+
+        $data['data'] = array(
+          'item_satuan_utama'         => $itemkonversidetail->item_satuan_utama,
+          'item_satuan_utama_jml'     => $itemkonversidetail->item_satuan_utama_jml,
+          'item_satuan_konversi'      => $itemkonversidetail->item_satuan_konversi,
+          'item_satuan_konversi_jml'  => $itemkonversidetail->item_satuan_konversi_jml
+        );
+
+        $where = array('satuan_id' => $item_satuan);
+        $satuan_name = $this->Global_m->select_config_one('satuan', 'satuan_name', $where);
+        $data['satuan_name'] = $satuan_name->satuan_name;
+
+    } else {
+
+      $where = array('satuan_id' => $item_satuan);
+
+      $satuan_name = $this->select_config_one('satuan', 'satuan_name', $where);
+      $data['data'][] = array('satuan_name' => $satuan_name->satuan_name );
+
+    }
+
+    echo json_encode($data);
+  }
+
+
   function item_konversi_action(){
     $response['response'] = '204';
 
-    if ($this->input->post('i_satuan_konversi')) {
+    if ($this->input->post('item_konversi_id')) {
+
+      $item_konversi_id = $this->input->post('item_konversi_id');
+      $data = $this->general_post_data(2);
+      $where = array('item_konversi_id' => $item_konversi_id);
+      $update = $this->Global_m->update_config('item_konversi', $data, $where);
+
+      if ($update == '200') {
+        $response['response'] = '200';
+      }
 
     } else {
+
       $data = $this->general_post_data(1);
 
       $create_config = $this->Global_m->create_config('item_konversi', $data);
       if ($create_config) {
         $response['response'] = '200';
       }
+
     }
     echo json_encode($response);
+  }
+
+  public function delete_itemKonversi($value='')
+  {
+    $data['response'] = '204';
+
+    $item_konversi_id = $this->input->post('item_konversi_id');
+    $where = array(
+      'item_konversi_id' => $item_konversi_id
+    );
+    $query = $this->Global_m->delete_config('item_konversi', $where);
+    if ($query) {
+      $data['response'] = '200';
+    }
+
+    echo json_encode($data);
+
   }
 
   function general_post_data($type, $id = null){
@@ -338,8 +407,8 @@ class Item_c extends My_controller{
         'item_id' => $this->input->post('item_id'),
         'item_satuan_utama' => $this->input->post('item_satuan_utama'),
         'item_satuan_utama_jml' => $this->input->post('item_satuan_utama_jml'),
-        'item_satuan' => $this->input->post('item_satuan'),
-        'item_konversi_jml' => $this->input->post('item_konversi_jml')
+        'item_satuan_konversi' => $this->input->post('item_satuan_konversi'),
+        'item_satuan_konversi_jml' => $this->input->post('item_satuan_konversi_jml')
       );
 		} else if ($type == 2) {
 			$data = array(
@@ -347,8 +416,8 @@ class Item_c extends My_controller{
         'item_konversi_id' => $this->input->post('item_konversi_id'),
         'item_satuan_utama' => $this->input->post('item_satuan_utama'),
         'item_satuan_utama_jml' => $this->input->post('item_satuan_utama_jml'),
-        'item_satuan' => $this->input->post('item_satuan'),
-        'item_konversi_jml' => $this->input->post('item_konversi_jml')
+        'item_satuan_konversi' => $this->input->post('item_satuan_konversi'),
+        'item_satuan_konversi_jml' => $this->input->post('item_satuan_konversi_jml')
 			);
 		}
 

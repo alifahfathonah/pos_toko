@@ -24,9 +24,10 @@ class Auth extends MY_Controller {
 			'user_password' => md5($password)
 			);
 
-		$cek = $this->Auth_model->cek_login("user",$where)->num_rows();
-		$user_type = $this->select_config_one('user', 'user_type', $where);
-		$branch_id = $this->select_config_one('user', 'branch', $where);
+		$cek 				= $this->Auth_model->cek_login("user",$where)->num_rows();
+		$user_id 		= $this->select_config_one('user', 'user_id', $where);
+		$user_type 	= $this->select_config_one('user', 'user_type', $where);
+		$branch_id 	= $this->select_config_one('user', 'branch', $where);
 
 		$user_type = $user_type->user_type;
 		$branch_id = $branch_id->branch;
@@ -38,6 +39,7 @@ class Auth extends MY_Controller {
 				'nama' 					=> $username,
 				'status' 				=> "a",
 				'user_type'			=> $user_type,
+				'user_id'				=> $user_id,
 				'branch_id'			=> $branch_id,
 				);
 			$this->session->set_userdata($data_session);

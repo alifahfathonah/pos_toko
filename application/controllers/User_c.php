@@ -56,7 +56,7 @@ class User_c extends MY_Controller{
     $data  = array(
                    'title_page' 	=> $this->page_bar($page_bar),
                    'action_add'   => "User_c/user_add",
-                   'action_close' => "User_c",
+                   'action_close' => "user_list",
                    'user_details' => false,
                    'user_type'    => $this->select_config('user_type', $this->where_branch_active),
                    'branches'     => $this->select_config('branches', $this->where_branch_active)
@@ -115,24 +115,24 @@ class User_c extends MY_Controller{
 
     $page_bar['data'][] = array(
                               'title_page' => 'User List',
-                              'url'        => '../user_list'
+                              'url'        => 'user_list'
                             );
 
     $page_bar['data'][] = array(
                               'title_page' => 'User Form',
-                              'url'        => '../user_form_edit/'.$id
+                              'url'        => 'user_form_edit/'.$id
                             );
 
     $where = '';
     $where_user_id  = "WHERE user_id = '$id'";
     $action         = "master/user_master/user_form";
     $data  = array(
-                   'title_page' 	=> $this->page_bar($page_bar),
-                   'action_add'     => "User_c/user_update",
-                   'action_close'   => "User_c",
-                   'user_details'   => $this->select_config('user', $where_user_id)->row(),
-                   'user_type'  => $this->select_config('user_type', $where),
-                   'branches'     => $this->select_config('branches', $where)
+                   'title_page' 	   => $this->page_bar($page_bar),
+                   'action_add'      => "User_c/user_update",
+                   'action_close'    => "user_list",
+                   'user_details'    => $this->select_config('user', $where_user_id)->row(),
+                   'user_type'       => $this->select_config('user_type', $where),
+                   'branches'        => $this->select_config('branches', $where)
                     );
     $this->get_page($data, $action, $this->load_plugin_head);
   }
