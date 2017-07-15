@@ -165,15 +165,24 @@ function toRp(angka){
     return rev2.split('').reverse().join('');
 }
 
+function FormatResult(data) {
+    markup = '<div>'+data.text+'</div>';
+    return markup;
+}
+
+function FormatSelection(data) {
+    return data.text;
+}
+
 function selectList_global(idElemen, url, placeholder, id = null){
-    // $('#i_gudang').select2('destroy');
+
     $(idElemen).css('width', '100%');
     $(idElemen).select2({
       placeholder: placeholder,
       multiple: false,
       allowClear: true,
       ajax: {
-        url: $base_url+url,
+        url: $("body").data("baseurl")+url,
         dataType: 'json',
         delay: 100,
         cache: false,

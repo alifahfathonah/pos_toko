@@ -104,6 +104,36 @@ class Penjualan_c extends MY_Controller{
     echo json_encode($data);
   }
 
+  function get_customer(){
+    $where = '';
+
+    $query = $this->select_config('customers', $where);
+    $data = array();
+    foreach ($query->result() as $row) {
+      $data[] = array(
+                    'data_id'    => $row->customer_id,
+                    'data_name'  => $row->customer_name
+                  );
+    }
+    echo json_encode($data);
+  }
+
+
+  function get_Barang()
+  {
+    $where = '';
+
+    $query = $this->select_config('items', $where);
+    $data = array();
+    foreach ($query->result() as $row) {
+      $data[] = array(
+                    'id'    => $row->item_id,
+                    'text'  => $row->item_name
+                  );
+    }
+    echo json_encode($data);
+  }
+
 }
 
 ?>
