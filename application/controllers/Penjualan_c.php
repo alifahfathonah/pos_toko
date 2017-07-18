@@ -6,6 +6,7 @@ class Penjualan_c extends MY_Controller{
   public function __construct()
   {
     parent::__construct();
+    $this->is_logged_in();
     $this->load->model('Penjualan_m');
     // $this->load_plugin_head[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/plugins/datatables/datatables.min.css";
     // $this->load_plugin_head[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css";
@@ -119,19 +120,71 @@ class Penjualan_c extends MY_Controller{
   }
 
 
-  function get_Barang()
-  {
+  function get_Barang(){
     $where = '';
 
     $query = $this->select_config('items', $where);
     $data = array();
     foreach ($query->result() as $row) {
       $data[] = array(
-                    'id'    => $row->item_id,
-                    'text'  => $row->item_name
+                    'data_id'    => $row->item_id,
+                    'data_name'  => $row->item_name
                   );
     }
     echo json_encode($data);
+  }
+
+
+    // public function get_Barang(){
+    //     		$param = $this->input->get('q');
+    //     		if ($param!=NULL) {
+    //     			$param = $this->input->get('q');
+    //     		} else {
+    //     			$param = "";
+    //     		}
+    //     		$select = 'a.*';
+    //
+    //     		$where_like['data'][] = array(
+    //     			'column' => 'a.item_name',
+    //     			'param'	 => $this->input->get('q')
+    //     		);
+    //
+    //     		$query = $this->mod->select($select, 'items a', NULL, NULL, NULL, $where_like);
+    //     		$response['items'] = array();
+    //     		if ($query<>false) {
+    //     			foreach ($query->result() as $val) {
+    //     					$response['items'][] = array(
+    //     						'id'	=> $val->item_id,
+    //     						'text'	=> $val->item_name
+    //     					);
+    //     			}
+    //     			$response['status'] = '200';
+    //     		}
+    //         // echo $this->db->last_query();
+    //     		echo json_encode($response);
+    //     	}
+
+  public function get_ItemDetails(){
+    $i_barang = $this->input->post('i_barang');
+    $i_branch = $this->input->post('i_branch');
+
+    $response = array();
+
+    $row = $this->Penjualan_m->selectItemReady($i_barang, $i_branch)->row();
+    if ($row<>false) {
+        $response['data'] = array(
+          'item_id'         => $row->item_id,
+          'item_code'       => $row->item_code,
+          'item_name'       => $row->item_name,
+          'item_img'        => $row->item_img,
+          'item_satuan'     => $row->item_satuan,
+          'item_kategori'   => $row->item_kategori,
+          'item_harga_jual' => $row->item_harga_jual,
+          'item_stock_id'   => $row->item_stock_qty,
+          'branch_id'       => $row->branch_id
+        );
+    }
+    echo json_encode($response);
   }
 
 }

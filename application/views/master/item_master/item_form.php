@@ -38,6 +38,11 @@
                         value="<?php echo isset($item_details->item_name) ? $item_details->item_name : ""?>">
                       </div>
                       <div class="form-group">
+                        <label for="">Kode Item</label>
+                        <input type="text" id="i_code" name="i_code" class="form-control"
+                        value="<?php echo isset($item_details->item_code) ? $item_details->item_code : ""?>">
+                      </div>
+                      <div class="form-group">
                         <label for="">Kategori</label>
                         <select id="i_kategori" name="i_kategori" class="form-control select2"></select>
                       </div>

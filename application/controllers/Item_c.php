@@ -15,15 +15,13 @@ class Item_c extends My_controller{
       $this->load_plugin_foot[] = base_url()."assets/metronic_v4.5.6/theme/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js";
   }
 
-  function index()
-  {
+  function index(){
     $this->get_header($this->load_plugin_head);
     $this->item_list();
     $this->get_footer($this->load_plugin_foot);
   }
 
-  function item_list()
-  {
+  function item_list(){
 
     $page_bar['data'][] = array(
                               'title_page' => 'Item list',
@@ -38,8 +36,55 @@ class Item_c extends My_controller{
     $this->load->view('master/item_master/item_list_v', $data);
   }
 
-  function item_form()
-  {
+  function printpricetagbarcode(){
+		$barang_id = $this->input->post('id');
+		$barang_id = implode(".", $barang_id);
+		// $wherebarangid = "WHERE barang_id = '$barang_id'";
+		// $wherebarangid_ = array('barang_id' => $barang_id );
+		//
+		$data = array(
+			'barang' => $barang_id
+		);
+		// $data = array(
+		// 	'barang' => $this->mod->select_config('m_barang', $wherebarangid)->row()
+		// );
+
+		$this->load->view('master/item_master/printbar_modal', $data);
+	}
+
+  function printBarcode($barang_id, $print_qty){
+		$barang_id = explode(".", $barang_id);
+		$query = '';
+		$no = 0;
+		$htmlarr = [];
+		$tanggal = date("Y/m/d");
+		$this->load->library('zend');
+		$this->zend->load('Zend/Barcode');
+		$img = [];
+		foreach ($barang_id as $value) {
+			$wherebarangid = "WHERE item_id = '$value'";
+			$query = $this->Global_m->select_config('items', $wherebarangid);
+			for ($i=0; $i < $print_qty; $i++) {
+				foreach ($query->result() as $row) {
+					// Zend_Barcode::render('code128', 'image', array('text'=>$row->barang_kode), array());
+					$img[] = $row->item_code;
+				}
+			}
+
+			$no++;
+		}
+		$data = array(
+			'img' => $img);
+    $this->load->view('master/item_master/printbar', $data);
+	}
+
+  function printpricetagbarcode_($barang_kode){
+		$this->load->library('zend');
+    $this->zend->load('Zend/Barcode');
+		Zend_Barcode::render('code128', 'image', array('text'=>$barang_kode), array());
+	}
+
+  function item_form(){
 
     $page_bar['data'][] = array(
                               'title_page' => 'Item list',
@@ -66,8 +111,7 @@ class Item_c extends My_controller{
     $this->get_page($data, $action, $this->load_plugin_head, $this->load_plugin_foot);
   }
 
-  function add_item()
-  {
+  function add_item(){
     $i_id = $this->input->post('i_id');
     $i_name = $this->input->post('i_name');
     $i_kategori = $this->input->post('i_kategori');
@@ -75,6 +119,7 @@ class Item_c extends My_controller{
     $i_hpp = $this->input->post('i_hpp');
     $i_harga_jual = $this->input->post('i_harga_jual');
     $i_satuan = $this->input->post('i_satuan');
+    $i_code = $this->input->post('i_code');
 
 
     $i_mg_file = isset($_FILES['i_img']['name']) ? $_FILES['i_img']['name']: " ";
@@ -87,6 +132,7 @@ class Item_c extends My_controller{
     $this->load->library('upload', $config);
 
     $data = array('item_id'         => '',
+                  'item_code'       => $i_code,
                   'item_name'       => $i_name,
                   'item_satuan'     => $i_satuan,
                   'item_img'        => $i_img,
@@ -103,8 +149,7 @@ class Item_c extends My_controller{
     redirect('Item_c');
   }
 
-  function edit_item($id)
-  {
+  function edit_item($id){
     $page_bar['data'][] = array(
                               'title_page' => 'Item list',
                               'url'        => 'Item'
@@ -148,6 +193,7 @@ class Item_c extends My_controller{
     $i_hpp = $this->input->post('i_hpp');
     $i_harga_jual = $this->input->post('i_harga_jual');
     $i_satuan = $this->input->post('i_satuan');
+    $i_code = $this->input->post('i_code');
 
     $i_mg_file = $_FILES['i_img']['name'];
 
@@ -158,6 +204,7 @@ class Item_c extends My_controller{
     if ($i_mg_file) {
 
       $data = array(
+        'item_code'       => $i_code,
     		'item_name'       => $i_nama,
         'item_satuan'     => $i_satuan,
         'item_img'        => $i_mg_file,
@@ -184,6 +231,7 @@ class Item_c extends My_controller{
     } else {
 
       $data = array(
+        'item_code'       => $i_code,
     		'item_name'       => $i_nama,
         'item_satuan'     => $i_satuan,
     		'item_kategori'   => $i_kategori,
@@ -242,8 +290,7 @@ class Item_c extends My_controller{
     $this->load->view('master/item_master/popmodal_item_konversi', $data);
   }
 
-  function item_konversi($value='')
-  {
+  function item_konversi($value=''){
       $item_id = $this->input->post('item_id');
       $select = "a.item_id, a.item_name, b.*, c.*";
       $table  = "items a" ;
@@ -270,8 +317,7 @@ class Item_c extends My_controller{
       );
   }
 
-  function get_satuan()
-  {
+  function get_satuan(){
     $where = '';
     if ($this->input->post('item_satuan')) {
       $item_satuan_utama = $this->input->post('item_satuan');
@@ -311,8 +357,7 @@ class Item_c extends My_controller{
     echo json_encode($satuan_name);
   }
 
-  function get_konversidetails()
-  {
+  function get_konversidetails(){
     $item_id = $this->input->post('item_id');
     $item_satuan = $this->input->post('item_satuan');
 
@@ -377,8 +422,7 @@ class Item_c extends My_controller{
     echo json_encode($response);
   }
 
-  public function delete_itemKonversi($value='')
-  {
+  public function delete_itemKonversi($value=''){
     $data['response'] = '204';
 
     $item_konversi_id = $this->input->post('item_konversi_id');

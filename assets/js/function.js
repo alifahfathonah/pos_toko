@@ -15,7 +15,6 @@ function confirm_delete(id, url){
   }
 }
 
-
 function number_currency(elem){
 	var elem_id = '#'+elem.id;
 	var elem_val		= $(elem_id).val();
@@ -81,7 +80,6 @@ function remove_rupiah(num){
   return str;
 }
 
-
 var format_rupiah = function(num){
     var str = num.toString().replace("Rp. ", ""), parts = false, output = [], i = 1, formatted = null;
     if(str.indexOf(".") > 0) {
@@ -102,7 +100,6 @@ var format_rupiah = function(num){
     formatted = output.reverse().join("");
       return("Rp. " + formatted + ((parts) ? "." + parts[1].substr(0, 2) : ""));
 };
-
 
 function confirm_payment(id,control){
 	var a = confirm("Anda yakin ingin membayar pembelian ini ?");
@@ -125,12 +122,14 @@ function confirm_done(id,control){
 		window.location.href = control+id;
 	}
 }
+
 function confirm_transaction(id,control,nopol){
 	var a = confirm("Anda yakin ingin mengkonfirmasi kedatangan truck dengan nopol "+nopol);
 	if(a==true){
 		window.location.href = control+id;
 	}
 }
+
 function confirm_act(id,control){
 	var a = confirm("Anda yakin ingin mengaktifkan data ini ?");
 	if(a==true){
@@ -151,7 +150,6 @@ function confirm_not_approved(id,control){
 		window.location.href = control+id;
 	}
 }
-
 
 function toRp(angka){
     var rev     = parseInt(angka, 10).toString().split('').reverse().join('');
@@ -174,8 +172,7 @@ function FormatSelection(data) {
     return data.text;
 }
 
-function selectList_global(idElemen, url, placeholder, id = null){
-
+function selectList_global(idElemen, url, placeholder){
     $(idElemen).css('width', '100%');
     $(idElemen).select2({
       placeholder: placeholder,
@@ -189,9 +186,9 @@ function selectList_global(idElemen, url, placeholder, id = null){
         data: function (params) {
           return {
             q: params.term, // search term
-            page: params.page,
-            id  : id
+            page: params.page
           };
+          console.log(params);
         },
         processResults: function (data, params) {
           // parse the results into the format expected by Select2
@@ -345,8 +342,7 @@ function getModalglobal(array = null, url = null, elem, functionafterSubmit = nu
     });
 }
 
-function actionModalglobal(formName, modalname, functionafterSubmit)
-{
+function actionModalglobal(formName, modalname, functionafterSubmit){
     var response = false;
     $(formName).submit(function(event){
       var modal_name = "#"+$(formName).parent().parent().parent().attr('id');

@@ -95,6 +95,7 @@ $route['Head_office_form']                = 'Office_c/office_form';
 $route['Item']                            = 'Item_c';
 $route['Item/(:any)']                     = 'Item_c/$1';
 $route['Item/(:any)/(:any)']              = 'Item_c/$1/$2';
+$route['Item/(:any)/(:any)/(:any)']              = 'Item_c/$1/$2/$3';
 
 $route['Supplier']                        = 'Supplier_c';
 $route['Supplier/(:any)']                 = 'Supplier_c/$1';
